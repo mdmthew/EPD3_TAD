@@ -2,64 +2,60 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Order;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function checkout()
     {
-        //
-    }
+        $user = Auth::user();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        $cart = Cart::with('items.product')
+            ->where('user_id', $user->id)
+            ->first();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        if (!$cart || $cart->items->isEmpty()) {
+            return redirect()->back()->with('error', 'El carrito está vacío');
+        }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Order $order)
-    {
-        //
-    }
+        DB::beginTransaction();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Order $order)
-    {
-        //
-    }
+        try {
+            $total = $cart->items->sum(function ($item) {
+                return $item->quantity * $item->unit_price;
+            });
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Order $order)
-    {
-        //
-    }
+            $order = Order::create([
+                'user_id' => $user->id,
+                'address_id' => $user->addresses()->first()->id,
+                'total' => $total,
+                'status' => 'pending',
+            ]);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
-    {
-        //
+            foreach ($cart->items as $item) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item->product_id,
+                    'quantity' => $item->quantity,
+                    'unit_price' => $item->unit_price,
+                    'subtotal' => $item->quantity * $item->unit_price,
+                ]);
+            }
+
+            $cart->items()->delete();
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Compra realizada correctamente');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->with('error', 'Error al procesar la compra');
+        }
     }
 }
