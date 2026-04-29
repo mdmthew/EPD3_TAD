@@ -10,10 +10,23 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
+    
+    
     public function index()
     {
-        //
+        $products = Product::all();
+
+        return view('products.index', compact('products'));
     }
+    
+    /*public function index()
+    {
+        $products = Product::where('is_active', true)->get();
+
+        return view('products.index', compact('products'));
+    }*/
+
+        
 
     /**
      * Show the form for creating a new resource.
@@ -36,7 +49,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        return view('products.show', compact('product'));
     }
 
     /**

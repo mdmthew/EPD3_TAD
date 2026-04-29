@@ -6,6 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    protected $fillable = [
+        'name',
+        'description',
+        'price',
+        'stock',
+        'image',
+        'is_active',
+    ];
+
     public function cartItems()
     {
         return $this->hasMany(CartItem::class);
