@@ -7,6 +7,13 @@ use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\OrderController;
 
 // Home → listado de productos
+Route::get('/', function () {
+    return view('home');
+});
+
+Route::get('/home', function () {
+    return redirect('/');
+});
 Route::get('/', [ProductController::class, 'index'])->name('products.index');
 
 // Detalle de producto
