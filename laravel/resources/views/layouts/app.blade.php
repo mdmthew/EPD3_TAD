@@ -29,12 +29,60 @@
         </button>
 
         <div class="collapse navbar-collapse nav-links" id="mainMenu">
-            <a href="{{ url('/') }}" class="nav-link">Inicio</a>
-            <a href="{{ url('/guias') }}" class="nav-link">Guías</a>
-            <a href="{{ url('/nosotros') }}" class="nav-link">Nosotros</a>
-            <a href="{{ url('/carrito') }}" class="nav-link">Carrito</a>
-            <a href="{{ url('/pedidos') }}" class="nav-link">Mis pedidos</a>
-            <a href="{{ url('/guias') }}" class="nav-cta">Comprar guía</a>
+
+            <a href="{{ url('/') }}" class="nav-link">
+                <i class="fas fa-home"></i> Inicio
+            </a>
+
+            <a href="{{ url('/guias') }}" class="nav-link">
+                <i class="fas fa-book-open"></i> Guías
+            </a>
+
+            <a href="{{ url('/nosotros') }}" class="nav-link">
+                <i class="fas fa-user-friends"></i> Nosotros
+            </a>
+
+            <a href="{{ url('/carrito') }}" class="nav-link">
+                <i class="fas fa-shopping-cart"></i> Carrito
+            </a>
+
+            @auth
+                <div class="dropdown">
+                    <button class="nav-cta dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user"></i> {{ Auth::user()->name }}
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" href="{{ url('/pedidos') }}">
+                                <i class="fas fa-box"></i> Mis pedidos
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="{{ url('/favoritos') }}">
+                                <i class="fas fa-heart"></i> Favoritos
+                            </a>
+                        </li>
+
+                        <li><hr class="dropdown-divider"></li>
+
+                        <li>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="dropdown-item">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            @else
+                <a href="{{ route('login') }}" class="nav-cta">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+            @endauth
+
         </div>
     </div>
 </nav>

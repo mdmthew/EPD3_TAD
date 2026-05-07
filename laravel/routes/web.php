@@ -5,63 +5,111 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\OrderController;
+use App\Models\Order;
+use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
-// Home → listado de productos
+/*
+|--------------------------------------------------------------------------
+| Rutas públicas
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
 Route::get('/home', function () {
     return redirect('/');
 });
-Route::get('/', [ProductController::class, 'index'])->name('products.index');
 
-// Detalle de producto
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/guias', function () {
+    return view('products.index');
+})->name('guides.index');
 
-// Carrito
+Route::get('/guias/{slug}', function ($slug) {
+    return view('products.show');
+})->name('guides.show');
+
+Route::get('/nosotros', function () {
+    return view('about');
+})->name('about');
+
+/*
+|--------------------------------------------------------------------------
+| Rutas protegidas usuario logueado
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/carrito', function () {
+    return view('cart.index');
+})->middleware('auth')->name('cart.index');
+
+Route::get('/pedidos', function () {
+    $orders = Order::where('user_id', Auth::id())
+        ->latest()
+        ->get();
+
+    return view('orders.index', compact('orders'));
+})->middleware('auth')->name('orders.index');
+
+Route::get('/favoritos', function () {
+    $favorites = Product::whereIn('id', function ($query) {
+        $query->select('product_id')
+            ->from('favorites')
+            ->where('user_id', Auth::id());
+    })->get();
+
+    return view('favorites.index', compact('favorites'));
+})->middleware('auth')->name('favorites.index');
+
+Route::post('/favoritos/{product}', function (Product $product) {
+    DB::table('favorites')->updateOrInsert([
+        'user_id' => Auth::id(),
+        'product_id' => $product->id,
+    ]);
+
+    return redirect('/favoritos');
+})->middleware('auth')->name('favorites.add');
+
+Route::delete('/favoritos/{product}', function (Product $product) {
+    DB::table('favorites')
+        ->where('user_id', Auth::id())
+        ->where('product_id', $product->id)
+        ->delete();
+
+    return redirect('/favoritos');
+})->middleware('auth')->name('favorites.remove');
+
+/*
+|--------------------------------------------------------------------------
+| Rutas funcionales de carrito / compra
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/cart', [CartController::class, 'show'])
     ->middleware('auth')
     ->name('cart.show');
 
-// Añadir producto al carrito
 Route::post('/cart/add', [CartItemController::class, 'add'])
     ->middleware('auth')
     ->name('cart.add');
 
-// Checkout
 Route::post('/checkout', [OrderController::class, 'checkout'])
     ->middleware('auth')
     ->name('checkout');
 
-Route::get('/', function () {
-    return view('home');
-});
-
-Route::get('/guias', function () {
-    return view('products.index');
-});
-
-Route::get('/guias/{slug}', function ($slug) {
-    return view('products.show');
-});
-
-Route::get('/nosotros', function () {
-    return view('about');
-});
-
-Route::get('/carrito', function () {
-    return view('cart.index');
-});
-
-Route::get('/pedidos', function () {
-    return view('orders.index');
-});
+/*
+|--------------------------------------------------------------------------
+| Rutas administrador
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/admin', function () {
     return view('admin.dashboard');
-});
+})->middleware('auth')->name('admin.dashboard');
 
 Route::get('/admin/productos', function () {
     return view('admin.products.index');
-});
+})->middleware('auth')->name('admin.products.index');
