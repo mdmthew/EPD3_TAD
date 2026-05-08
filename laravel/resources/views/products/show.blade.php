@@ -32,7 +32,7 @@
             <span class="price-label d-block text-secondary">Guía digital en PDF</span>
           </div>
           <div class="d-grid gap-2">
-            <a href="{{ url('/carrito') }}" class="btn-primary"><span>Comprar</span><i class="fas fa-shopping-cart"></i></a>
+            <a href="{{ url('/cart') }}" class="btn-primary"><span>Comprar</span><i class="fas fa-shopping-cart"></i></a>
             <button class="btn-secondary">Añadir a favoritos</button>
           </div>
           <p class="guide-detail-note mt-3 mb-0 text-secondary">

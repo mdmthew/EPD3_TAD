@@ -19,6 +19,6 @@ class CartController extends Controller
             ->where('user_id', $user->id)
             ->first();
 
-        return view('cart.show-basic', compact('cart'));
+        return view('cart.index', compact('cart'));
     }
 }

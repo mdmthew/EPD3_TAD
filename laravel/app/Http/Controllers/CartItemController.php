@@ -10,67 +10,10 @@ use Illuminate\Support\Facades\Auth;
 
 class CartItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(CartItem $cartItem)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(CartItem $cartItem)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, CartItem $cartItem)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(CartItem $cartItem)
-    {
-        //
-    }
-
     public function add(Request $request)
     {
         $user = Auth::user();
 
-        // Validar datos
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'quantity' => 'nullable|integer|min:1'
@@ -78,15 +21,12 @@ class CartItemController extends Controller
 
         $quantity = $request->quantity ?? 1;
 
-        // Obtener producto
         $product = Product::findOrFail($request->product_id);
 
-        // Obtener o crear carrito
         $cart = Cart::firstOrCreate([
             'user_id' => $user->id
         ]);
 
-        // Buscar si ya existe en el carrito
         $item = CartItem::where('cart_id', $cart->id)
             ->where('product_id', $product->id)
             ->first();
@@ -103,6 +43,48 @@ class CartItemController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success', 'Producto añadido al carrito');
+        return redirect()->route('cart.index')->with('success', 'Producto añadido al carrito');
+    }
+
+    public function increase(CartItem $cartItem)
+    {
+        $this->authorizeCartItem($cartItem);
+
+        $cartItem->quantity++;
+        $cartItem->save();
+
+        return redirect()->route('cart.index')->with('success', 'Cantidad actualizada');
+    }
+
+    public function decrease(CartItem $cartItem)
+    {
+        $this->authorizeCartItem($cartItem);
+
+        if ($cartItem->quantity <= 1) {
+            $cartItem->delete();
+
+            return redirect()->route('cart.index')->with('success', 'Producto eliminado del carrito');
+        }
+
+        $cartItem->quantity--;
+        $cartItem->save();
+
+        return redirect()->route('cart.index')->with('success', 'Cantidad actualizada');
+    }
+
+    public function destroy(CartItem $cartItem)
+    {
+        $this->authorizeCartItem($cartItem);
+
+        $cartItem->delete();
+
+        return redirect()->route('cart.index')->with('success', 'Producto eliminado del carrito');
+    }
+
+    private function authorizeCartItem(CartItem $cartItem): void
+    {
+        if ($cartItem->cart->user_id !== Auth::id()) {
+            abort(403);
+        }
     }
 }

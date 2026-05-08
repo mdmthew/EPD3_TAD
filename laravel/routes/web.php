@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\OrderController;
@@ -41,10 +40,6 @@ Route::get('/nosotros', function () {
 | Rutas protegidas usuario logueado
 |--------------------------------------------------------------------------
 */
-
-Route::get('/carrito', function () {
-    return view('cart.index');
-})->middleware('auth')->name('cart.index');
 
 Route::get('/pedidos', function () {
     $orders = Order::where('user_id', Auth::id())
@@ -90,11 +85,23 @@ Route::delete('/favoritos/{product}', function (Product $product) {
 
 Route::get('/cart', [CartController::class, 'show'])
     ->middleware('auth')
-    ->name('cart.show');
+    ->name('cart.index');
 
 Route::post('/cart/add', [CartItemController::class, 'add'])
     ->middleware('auth')
     ->name('cart.add');
+
+Route::post('/cart/item/{cartItem}/increase', [CartItemController::class, 'increase'])
+    ->middleware('auth')
+    ->name('cart.item.increase');
+
+Route::post('/cart/item/{cartItem}/decrease', [CartItemController::class, 'decrease'])
+    ->middleware('auth')
+    ->name('cart.item.decrease');
+
+Route::delete('/cart/item/{cartItem}', [CartItemController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('cart.item.destroy');
 
 Route::post('/checkout', [OrderController::class, 'checkout'])
     ->middleware('auth')

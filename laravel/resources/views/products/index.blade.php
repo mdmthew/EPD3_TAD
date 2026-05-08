@@ -90,7 +90,7 @@
                 <div class="guide-content"><h3 class="guide-title">Guía Esencial de Bali</h3><p class="guide-excerpt">La isla de los dioses desde templos secretos hasta playas espectaculares.</p></div>
                 <div class="guide-actions">
                   @auth
-                    <a href="{{ url('/carrito') }}" class="guide-buy-btn"><i class="fas fa-shopping-bag"></i> Comprar ahora</a>
+                    <a href="{{ url('/cart') }}" class="guide-buy-btn"><i class="fas fa-shopping-bag"></i> Comprar ahora</a>
                     <a href="{{ url('/favoritos') }}" class="guide-details-link"><i class="fas fa-heart"></i> Favorito</a>
                   @else
                     <a href="{{ route('login') }}" class="guide-buy-btn"><i class="fas fa-shopping-bag"></i> Comprar ahora</a>
@@ -108,7 +108,7 @@
                 <div class="guide-content"><h3 class="guide-title">Guía Completa de Italia</h3><p class="guide-excerpt">Del Coliseo a la Costa Amalfitana, con rutas por pueblos toscanos.</p></div>
                 <div class="guide-actions">
                   @auth
-                    <a href="{{ url('/carrito') }}" class="guide-buy-btn"><i class="fas fa-shopping-bag"></i> Comprar ahora</a>
+                    <a href="{{ url('/cart') }}" class="guide-buy-btn"><i class="fas fa-shopping-bag"></i> Comprar ahora</a>
                     <a href="{{ url('/favoritos') }}" class="guide-details-link"><i class="fas fa-heart"></i> Favorito</a>
                   @else
                     <a href="{{ route('login') }}" class="guide-buy-btn"><i class="fas fa-shopping-bag"></i> Comprar ahora</a>
