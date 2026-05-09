@@ -28,7 +28,11 @@
 
           @forelse($products ?? [] as $product)
             <div class="col-md-6 col-xl-4">
-              <article class="guide-card h-100">
+              <article
+                  class="guide-card h-100 position-relative guide-clickable"
+                  onclick="window.location='{{ route('guides.show', $product->id) }}'"
+                  style="cursor:pointer;"
+              >
                 <div class="guide-header">
                   <span class="guide-badge">GUÍA DIGITAL</span>
                   <div class="guide-price">{{ $product->price }}€</div>
@@ -49,35 +53,40 @@
                   <p class="guide-excerpt">{{ $product->description }}</p>
                 </div>
 
-                <div class="guide-actions">
-                  @auth
-                    <form method="POST" action="{{ route('cart.add') }}">
-                      @csrf
-                      <input type="hidden" name="product_id" value="{{ $product->id }}">
-                      <button type="submit" class="guide-buy-btn">
-                        <i class="fas fa-shopping-bag"></i> Añadir al carrito
-                      </button>
-                    </form>
+                <div class="guide-actions position-relative" onclick="event.stopPropagation();">
+                @auth
 
-                    <form method="POST" action="{{ route('favorites.add', $product->id) }}">
-                      @csrf
-                      <button type="submit" class="guide-details-btn">
-                        <i class="fas fa-heart"></i> Favorito
-                      </button>
-                    </form>
-                  @else
-                    <a href="{{ route('login') }}" class="guide-buy-btn">
-                      <i class="fas fa-shopping-bag"></i> Añadir al carrito
-                    </a>
+                  <form method="POST" action="{{ route('cart.add') }}">
+                    @csrf
 
-                    <a href="{{ route('login') }}" class="guide-details-link">
-                      <i class="fas fa-heart"></i> Favorito
-                    </a>
-                  @endauth
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
 
-                  <a href="{{ route('guides.show', $product->id) }}" class="guide-details-link">
-                    <i class="fas fa-info-circle"></i> Más detalles
+                    <button type="submit" class="guide-buy-btn">
+                      <i class="fas fa-cart-plus"></i>
+                      Añadir
+                    </button>
+                  </form>
+
+                  <form method="POST" action="{{ route('favorites.add', $product->id) }}">
+                    @csrf
+
+                    <button type="submit" class="guide-fav-btn">
+                      <i class="fas fa-heart"></i>
+                    </button>
+                  </form>
+
+                @else
+
+                  <a href="{{ route('login') }}" class="guide-buy-btn">
+                    <i class="fas fa-cart-plus"></i>
+                    Añadir
                   </a>
+
+                  <a href="{{ route('login') }}" class="guide-fav-btn">
+                    <i class="fas fa-heart"></i>
+                  </a>
+
+                @endauth
                 </div>
               </article>
             </div>
