@@ -42,7 +42,7 @@
                 <i class="fas fa-user-friends"></i> Nosotros
             </a>
 
-            <a href="{{ url('/carrito') }}" class="nav-link">
+            <a href="{{ url('/cart') }}" class="nav-link">
                 <i class="fas fa-shopping-cart"></i> Carrito
             </a>
 

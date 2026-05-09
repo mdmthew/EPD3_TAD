@@ -30,28 +30,21 @@
         <div class="stat"><span class="stat-number">24h</span><span class="stat-label">entrega digital</span></div>
       </div>
     </div>
-
     <div class="hero-visual guides-carousel">
-      <a href="{{ url('/guias/bali') }}" class="guide-card-overlay card-1">
-        <span class="guide-date">Guía</span>
-        <h3 class="guide-card-title">Guía Esencial de Bali</h3>
-        <p class="guide-card-meta">Isla de los dioses · 2€</p>
-        <span class="guide-card-tag">Bali</span>
-      </a>
+      @foreach($featuredProducts as $index => $product)
+        @php
+          $image = $product->image
+              ? (filter_var($product->image, FILTER_VALIDATE_URL) ? $product->image : asset($product->image))
+              : 'https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=800&q=80';
+        @endphp
 
-      <a href="{{ url('/guias/italia') }}" class="guide-card-overlay card-2">
-        <span class="guide-date">Guía</span>
-        <h3 class="guide-card-title">Guía Completa de Italia</h3>
-        <p class="guide-card-meta">Coliseo, Toscana y más · 2€</p>
-        <span class="guide-card-tag">Italia</span>
-      </a>
-
-      <a href="{{ url('/guias') }}" class="guide-card-overlay card-3">
-        <span class="guide-date">Próximamente</span>
-        <h3 class="guide-card-title">Tu próximo destino</h3>
-        <p class="guide-card-meta">Vota el siguiente viaje</p>
-        <span class="guide-card-tag">Explorar</span>
-      </a>
+        <a href="{{ route('guides.show', $product->id) }}" class="guide-card-overlay card-{{ $index + 1 }}" style="background-image: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.85)), url('{{ $image }}'); background-size: cover; background-position: center;">
+          <span class="guide-date">Guía</span>
+          <h3 class="guide-card-title">{{ $product->name }}</h3>
+          <p class="guide-card-meta">{{ number_format($product->price, 2) }}€ · Guía digital</p>
+          <span class="guide-card-tag">{{ $product->name }}</span>
+        </a>
+      @endforeach
     </div>
   </div>
 </section>
