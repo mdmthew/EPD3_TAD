@@ -802,3 +802,70 @@ html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) {
   * { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
 }
+
+.guide-clickable {
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.guide-clickable:hover {
+    transform: translateY(-6px);
+}
+.guide-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 0 24px 28px;
+}
+
+.guide-actions form:first-child {
+    flex: 1;
+}
+
+.guide-actions form {
+    margin: 0;
+}
+
+.guide-buy-btn {
+    width: 100%;
+    min-height: 46px;
+    padding: 0 18px;
+    border-radius: 999px;
+    border: none;
+    background: var(--primary);
+    color: var(--black);
+    font-weight: 700;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.guide-buy-btn:hover {
+    background: var(--primary-dark);
+    color: var(--black);
+    transform: translateY(-2px);
+}
+
+.guide-fav-btn {
+    width: 46px;
+    min-width: 46px;
+    height: 46px;
+    border-radius: 999px;
+    border: 1px solid rgba(212, 160, 23, 0.45);
+    background: rgba(212, 160, 23, 0.08);
+    color: var(--primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.guide-fav-btn:hover {
+    background: var(--primary);
+    color: var(--black);
+    transform: translateY(-2px);
+}
