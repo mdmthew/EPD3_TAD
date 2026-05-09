@@ -26,112 +26,71 @@
       <div class="col-lg-9">
         <div class="row g-4">
 
-          @isset($products)
-            @foreach($products as $product)
-              <div class="col-md-6 col-xl-4">
-                <article class="guide-card h-100">
-                  <div class="guide-header">
-                    <span class="guide-badge">GUÍA DIGITAL</span>
-                    <div class="guide-price">{{ $product->price }}€</div>
-                  </div>
+          @forelse($products ?? [] as $product)
+            <div class="col-md-6 col-xl-4">
+              <article class="guide-card h-100">
+                <div class="guide-header">
+                  <span class="guide-badge">GUÍA DIGITAL</span>
+                  <div class="guide-price">{{ $product->price }}€</div>
+                </div>
 
-                  <div class="guide-image">
-                    @if($product->image)
-                      <img src="{{ asset($product->image) }}" alt="{{ $product->name }}">
-                    @else
-                      <img src="https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=800&q=80" alt="{{ $product->name }}">
-                    @endif
-                  </div>
+                <div class="guide-image">
+                  @php
+                    $image = $product->image
+                        ? (filter_var($product->image, FILTER_VALIDATE_URL) ? $product->image : asset($product->image))
+                        : 'https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=800&q=80';
+                  @endphp
 
-                  <div class="guide-content">
-                    <h3 class="guide-title">{{ $product->name }}</h3>
-                    <p class="guide-excerpt">{{ $product->description }}</p>
-                  </div>
+                  <img src="{{ $image }}" alt="{{ $product->name }}">
+                </div>
 
-                  <div class="guide-actions">
-                    @auth
-                      <form method="POST" action="{{ route('cart.add') }}">
-                        @csrf
-                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <button type="submit" class="guide-buy-btn">
-                          <i class="fas fa-shopping-bag"></i> Comprar ahora
-                        </button>
-                      </form>
+                <div class="guide-content">
+                  <h3 class="guide-title">{{ $product->name }}</h3>
+                  <p class="guide-excerpt">{{ $product->description }}</p>
+                </div>
 
-                      <form method="POST" action="{{ route('favorites.add', $product->id) }}">
-                        @csrf
-                        <button type="submit" class="guide-details-btn">
-                          <i class="fas fa-heart"></i> Favorito
-                        </button>
-                      </form>
-                    @else
-                      <a href="{{ route('login') }}" class="guide-buy-btn">
-                        <i class="fas fa-shopping-bag"></i> Comprar ahora
-                      </a>
+                <div class="guide-actions">
+                  @auth
+                    <form method="POST" action="{{ route('cart.add') }}">
+                      @csrf
+                      <input type="hidden" name="product_id" value="{{ $product->id }}">
+                      <button type="submit" class="guide-buy-btn">
+                        <i class="fas fa-shopping-bag"></i> Añadir al carrito
+                      </button>
+                    </form>
 
-                      <a href="{{ route('login') }}" class="guide-details-link">
+                    <form method="POST" action="{{ route('favorites.add', $product->id) }}">
+                      @csrf
+                      <button type="submit" class="guide-details-btn">
                         <i class="fas fa-heart"></i> Favorito
-                      </a>
-                    @endauth
-
-                    <a href="{{ url('/guias/' . $product->id) }}" class="guide-details-link">
-                      <i class="fas fa-info-circle"></i> Más detalles
+                      </button>
+                    </form>
+                  @else
+                    <a href="{{ route('login') }}" class="guide-buy-btn">
+                      <i class="fas fa-shopping-bag"></i> Añadir al carrito
                     </a>
-                  </div>
-                </article>
+
+                    <a href="{{ route('login') }}" class="guide-details-link">
+                      <i class="fas fa-heart"></i> Favorito
+                    </a>
+                  @endauth
+
+                  <a href="{{ route('guides.show', $product->id) }}" class="guide-details-link">
+                    <i class="fas fa-info-circle"></i> Más detalles
+                  </a>
+                </div>
+              </article>
+            </div>
+          @empty
+
+            <div class="col-12">
+              <div class="guide-card p-4 text-center">
+                <h2 class="h4">No hay productos disponibles</h2>
+                <p class="text-secondary mb-0">Crea productos en la base de datos para que aparezcan aquí.</p>
               </div>
-            @endforeach
-          @else
-
-            <div class="col-md-6 col-xl-4">
-              <article class="guide-card h-100">
-                <div class="guide-header"><span class="guide-badge">BARONG EXPERIENCES</span><div class="guide-price">2€</div></div>
-                <div class="guide-image"><img src="https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=800&q=80" alt="Bali"></div>
-                <div class="guide-content"><h3 class="guide-title">Guía Esencial de Bali</h3><p class="guide-excerpt">La isla de los dioses desde templos secretos hasta playas espectaculares.</p></div>
-                <div class="guide-actions">
-                  @auth
-                    <a href="{{ url('/cart') }}" class="guide-buy-btn"><i class="fas fa-shopping-bag"></i> Comprar ahora</a>
-                    <a href="{{ url('/favoritos') }}" class="guide-details-link"><i class="fas fa-heart"></i> Favorito</a>
-                  @else
-                    <a href="{{ route('login') }}" class="guide-buy-btn"><i class="fas fa-shopping-bag"></i> Comprar ahora</a>
-                    <a href="{{ route('login') }}" class="guide-details-link"><i class="fas fa-heart"></i> Favorito</a>
-                  @endauth
-                  <a href="{{ url('/guias/bali') }}" class="guide-details-link"><i class="fas fa-info-circle"></i> Más detalles</a>
-                </div>
-              </article>
             </div>
 
-            <div class="col-md-6 col-xl-4">
-              <article class="guide-card h-100">
-                <div class="guide-header"><span class="guide-badge">NUEVA</span><div class="guide-price">2€</div></div>
-                <div class="guide-image"><img src="https://images.unsplash.com/photo-1525874684015-58379d421a52?auto=format&fit=crop&w=800&q=80" alt="Italia"></div>
-                <div class="guide-content"><h3 class="guide-title">Guía Completa de Italia</h3><p class="guide-excerpt">Del Coliseo a la Costa Amalfitana, con rutas por pueblos toscanos.</p></div>
-                <div class="guide-actions">
-                  @auth
-                    <a href="{{ url('/cart') }}" class="guide-buy-btn"><i class="fas fa-shopping-bag"></i> Comprar ahora</a>
-                    <a href="{{ url('/favoritos') }}" class="guide-details-link"><i class="fas fa-heart"></i> Favorito</a>
-                  @else
-                    <a href="{{ route('login') }}" class="guide-buy-btn"><i class="fas fa-shopping-bag"></i> Comprar ahora</a>
-                    <a href="{{ route('login') }}" class="guide-details-link"><i class="fas fa-heart"></i> Favorito</a>
-                  @endauth
-                  <a href="{{ url('/guias/italia') }}" class="guide-details-link"><i class="fas fa-info-circle"></i> Más detalles</a>
-                </div>
-              </article>
-            </div>
-
-            <div class="col-md-6 col-xl-4">
-              <article class="guide-card h-100 coming-soon">
-                <div class="guide-header"><span class="guide-badge">PRÓXIMAMENTE</span><div class="guide-price">—</div></div>
-                <div class="guide-image"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="Japón"></div>
-                <div class="guide-content"><h3 class="guide-title">Guía de Japón low cost</h3><p class="guide-excerpt">Ciudades, templos y transporte eficiente con presupuesto ajustado.</p></div>
-                <div class="guide-actions">
-                  <button class="guide-details-btn"><i class="fas fa-clock"></i> En preparación</button>
-                  <a href="{{ url('/nosotros#contacto') }}" class="guide-details-link"><i class="fas fa-bell"></i> Avisarme</a>
-                </div>
-              </article>
-            </div>
-
-          @endisset
+          @endforelse
 
         </div>
       </div>

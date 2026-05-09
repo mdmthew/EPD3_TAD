@@ -14,7 +14,7 @@ class ProductController extends Controller
     
     public function index()
     {
-        $products = Product::all();
+        $products = Product::where('is_active', true)->get();
 
         return view('products.index', compact('products'));
     }
@@ -25,7 +25,14 @@ class ProductController extends Controller
 
         return view('products.index', compact('products'));
     }*/
+    public function home()
+    {
+        $featuredProducts = Product::where('is_active', true)
+            ->take(3)
+            ->get();
 
+        return view('home', compact('featuredProducts'));
+    }
         
 
     /**

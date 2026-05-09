@@ -43,7 +43,7 @@ class CartItemController extends Controller
             ]);
         }
 
-        return redirect()->route('cart.index')->with('success', 'Producto añadido al carrito');
+        return redirect('/carrito')->with('success', 'Producto añadido al carrito');
     }
 
     public function increase(CartItem $cartItem)

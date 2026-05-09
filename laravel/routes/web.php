@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
@@ -15,21 +16,17 @@ use Illuminate\Support\Facades\DB;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [ProductController::class, 'home'])->name('home');
 
 Route::get('/home', function () {
     return redirect('/');
 });
 
-Route::get('/guias', function () {
-    return view('products.index');
-})->name('guides.index');
+Route::get('/guias', [ProductController::class, 'index'])
+    ->name('guides.index');
 
-Route::get('/guias/{slug}', function ($slug) {
-    return view('products.show');
-})->name('guides.show');
+Route::get('/guias/{product}', [ProductController::class, 'show'])
+    ->name('guides.show');
 
 Route::get('/nosotros', function () {
     return view('about');
@@ -65,7 +62,7 @@ Route::post('/favoritos/{product}', function (Product $product) {
         'product_id' => $product->id,
     ]);
 
-    return redirect('/favoritos');
+    return back()->with('success', 'Producto añadido a favoritos');
 })->middleware('auth')->name('favorites.add');
 
 Route::delete('/favoritos/{product}', function (Product $product) {
