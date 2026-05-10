@@ -56,7 +56,7 @@
 
               <div class="col-6">
                 <div class="mini-stat">
-                  <span>2€</span>
+                  <span>10€</span>
                   <small>Precio medio</small>
                 </div>
               </div>
@@ -115,9 +115,9 @@
           <article class="team-card guide-card h-100 p-4">
 
             <div class="d-flex align-items-center gap-3 mb-3">
-              <div class="avatar-circle">Ab</div>
+              <div class="avatar-circle">Al</div>
               <div>
-                <h3 class="h5 mb-1">Abel</h3>
+                <h3 class="h5 mb-1">Alfonso</h3>
                 <p class="mb-0 text-secondary">Contenido, rutas y edición</p>
               </div>
             </div>

@@ -100,7 +100,6 @@
 <footer class="site-footer py-4">
     <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
         <p class="mb-0">© {{ date('Y') }} Viajes Pa Pobres</p>
-        <a href="{{ url('/nosotros#contacto') }}">Contacto</a>
     </div>
 </footer>
 
