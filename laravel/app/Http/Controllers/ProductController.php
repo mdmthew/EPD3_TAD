@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\CategoryGroup;
 
 class ProductController extends Controller
 {
@@ -11,12 +12,27 @@ class ProductController extends Controller
      * Display a listing of the resource.
      */
     
-    
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::where('is_active', true)->get();
+        $query = Product::where('is_active', true);
 
-        return view('products.index', compact('products'));
+        if ($request->filled('categories')) {
+            foreach ($request->categories as $categoryId) {
+                $query->whereHas('categories', function ($q) use ($categoryId) {
+                    $q->where('categories.id', $categoryId);
+                });
+            }
+        }
+
+        if ($request->filled('travel_price_level')) {
+            $query->where('travel_price_level', '<=', $request->travel_price_level);
+        }
+
+        $products = $query->get();
+
+        $categoryGroups = CategoryGroup::with('categories')->get();
+
+        return view('products.index', compact('products', 'categoryGroups'));
     }
     
     /*public function index()
