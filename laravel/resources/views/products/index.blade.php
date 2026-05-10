@@ -15,11 +15,69 @@
     <div class="row g-4 align-items-start">
       <div class="col-lg-3">
         <div class="guide-card p-4 sticky-top" style="top:110px">
-          <h2 class="h5 mb-3">Filtrar</h2>
-          <div class="form-check mb-2"><input class="form-check-input" type="checkbox" id="f1"><label class="form-check-label" for="f1">Europa</label></div>
-          <div class="form-check mb-2"><input class="form-check-input" type="checkbox" id="f2"><label class="form-check-label" for="f2">Asia</label></div>
-          <div class="form-check mb-2"><input class="form-check-input" type="checkbox" id="f3"><label class="form-check-label" for="f3">Low cost</label></div>
-          <button class="btn-secondary mt-3 w-100">Aplicar</button>
+          <h2 class="h5 mb-4">Filtrar</h2>
+          <form method="GET" action="{{ route('guides.index') }}" id="filtersForm">
+
+            @foreach($categoryGroups as $group)
+
+              <div class="mb-4">
+
+                <h3 class="h6 mb-3">
+                  {{ $group->name }}
+                </h3>
+
+                @foreach($group->categories as $category)
+
+                  <div class="form-check mb-2">
+
+                    <input
+                      class="form-check-input filter-input"
+                      type="checkbox"
+                      name="categories[]"
+                      value="{{ $category->id }}"
+                      id="category_{{ $category->id }}"
+                      {{ in_array($category->id, request('categories', [])) ? 'checked' : '' }}
+                    >
+
+                    <label
+                      class="form-check-label"
+                      for="category_{{ $category->id }}"
+                    >
+                      {{ $category->name }}
+                    </label>
+
+                  </div>
+
+                @endforeach
+
+              </div>
+
+            @endforeach
+
+            {{-- PRECIO VIAJE --}}
+
+            <div class="mb-4">
+
+              <h3 class="h6 mb-3">
+                Precio del viaje
+              </h3>
+
+              <div class="d-flex justify-content-between small mb-1">
+                <span>$</span>
+                <span>$$$</span>
+              </div>
+
+              <input
+                type="range"
+                min="1"
+                max="3"
+                step="1"
+                name="travel_price_level"
+                value="{{ request('travel_price_level', 3) }}"
+                class="form-range filter-input"
+              >
+            </div>
+          </form>
         </div>
       </div>
 
@@ -41,7 +99,9 @@
                 <div class="guide-image">
                   @php
                     $image = $product->image
-                        ? (filter_var($product->image, FILTER_VALIDATE_URL) ? $product->image : asset($product->image))
+                        ? (filter_var($product->image, FILTER_VALIDATE_URL)
+                            ? $product->image
+                            : asset($product->image))
                         : 'https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=800&q=80';
                   @endphp
 
@@ -107,4 +167,12 @@
   </div>
 </section>
 </main>
+
+<script>
+  document.querySelectorAll('.filter-input').forEach(input => {
+      input.addEventListener('change', () => {
+          document.getElementById('filtersForm').submit();
+      });
+  });
+</script>
 @endsection
