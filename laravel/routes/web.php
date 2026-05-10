@@ -10,6 +10,9 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Admin\ProductAdminController;
+use App\Http\Controllers\Admin\CategoryAdminController;
+use App\Http\Controllers\Admin\UserAdminController;
+use App\Http\Controllers\Admin\OrderAdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -120,6 +123,13 @@ Route::middleware(['auth', 'admin'])
             return view('admin.dashboard');
         })->name('dashboard');
 
+
+        /*
+        |---------------------------
+        | Productos
+        |---------------------------
+        */
+        
         Route::get('/productos', [ProductAdminController::class, 'index'])
             ->name('products.index');
 
@@ -140,4 +150,65 @@ Route::middleware(['auth', 'admin'])
 
         Route::delete('/productos/{product}', [ProductAdminController::class, 'destroy'])
             ->name('products.destroy');
-});
+
+
+        /*
+        |---------------------------
+        | Categorias
+        |---------------------------
+        */
+
+        Route::get('/categorias', [CategoryAdminController::class, 'index'])
+            ->name('categories.index');
+
+        Route::get('/categorias/create', [CategoryAdminController::class, 'create'])
+            ->name('categories.create');
+
+        Route::post('/categorias', [CategoryAdminController::class, 'store'])
+            ->name('categories.store');
+
+        Route::get('/categorias/{category}/edit', [CategoryAdminController::class, 'edit'])
+            ->name('categories.edit');
+
+        Route::put('/categorias/{category}', [CategoryAdminController::class, 'update'])
+            ->name('categories.update');
+
+        Route::delete('/categorias/{category}', [CategoryAdminController::class, 'destroy'])
+            ->name('categories.destroy');
+
+
+        /*
+        |---------------------------
+        | Usuarios
+        |---------------------------
+        */
+
+        Route::get('/usuarios', [UserAdminController::class, 'index'])
+            ->name('users.index');
+
+        Route::get('/usuarios/{user}/edit', [UserAdminController::class, 'edit'])
+            ->name('users.edit');
+
+        Route::put('/usuarios/{user}', [UserAdminController::class, 'update'])
+            ->name('users.update');
+
+        Route::delete('/usuarios/{user}', [UserAdminController::class, 'destroy'])
+            ->name('users.destroy');
+
+
+        /*
+        |---------------------------
+        | Pedidos
+        |---------------------------
+        */
+
+        Route::get('/pedidos', [OrderAdminController::class, 'index'])
+            ->name('orders.index');
+
+        Route::patch('/pedidos/{order}/estado', [OrderAdminController::class, 'updateStatus'])
+            ->name('orders.updateStatus');
+
+
+
+    });
+

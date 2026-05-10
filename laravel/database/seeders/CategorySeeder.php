@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\CategoryGroup;
 use App\Models\Category;
+use Illuminate\Support\Str;
 
 class CategorySeeder extends Seeder
 {
@@ -33,7 +34,7 @@ class CategorySeeder extends Seeder
             Category::create([
                 'category_group_id' => $continents->id,
                 'name' => $name,
-                'slug' => strtolower($name),
+                'slug' => Str::slug($name),
             ]);
         }
 
@@ -60,7 +61,7 @@ class CategorySeeder extends Seeder
             Category::create([
                 'category_group_id' => $landscape->id,
                 'name' => $name,
-                'slug' => strtolower($name),
+                'slug' => Str::slug($name),
             ]);
         }
 
@@ -86,7 +87,7 @@ class CategorySeeder extends Seeder
             Category::create([
                 'category_group_id' => $duration->id,
                 'name' => $name,
-                'slug' => strtolower(str_replace(' ', '-', $name)),
+                'slug' => Str::slug($name),
             ]);
         }
 
@@ -112,7 +113,7 @@ class CategorySeeder extends Seeder
             Category::create([
                 'category_group_id' => $guidePrice->id,
                 'name' => $name,
-                'slug' => strtolower(str_replace(' ', '-', $name)),
+                'slug' => Str::slug(str_replace('€', ' euros', $name)),
             ]);
         }
     }

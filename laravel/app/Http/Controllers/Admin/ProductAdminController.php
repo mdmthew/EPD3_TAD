@@ -18,7 +18,12 @@ class ProductAdminController extends Controller
 
     public function create()
     {
-        $categories = Category::with('group')->get();
+        $categories = Category::with('group')
+            ->join('category_groups', 'categories.category_group_id', '=', 'category_groups.id')
+            ->orderBy('category_groups.name')
+            ->orderBy('categories.name')
+            ->select('categories.*')
+            ->get();
 
         return view('admin.products.create', compact('categories'));
     }
@@ -55,7 +60,12 @@ class ProductAdminController extends Controller
 
     public function edit(Product $product)
     {
-        $categories = Category::with('group')->get();
+        $categories = Category::with('group')
+            ->join('category_groups', 'categories.category_group_id', '=', 'category_groups.id')
+            ->orderBy('category_groups.name')
+            ->orderBy('categories.name')
+            ->select('categories.*')
+            ->get();
 
         return view('admin.products.edit', compact('product', 'categories'));
     }
