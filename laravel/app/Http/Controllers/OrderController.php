@@ -32,7 +32,8 @@ class OrderController extends Controller
 
             $order = Order::create([
                 'user_id' => $user->id,
-                'address_id' => $user->addresses()->first()->id,
+                'address_id' => null,
+                //'address_id' => $user->addresses()->first()->id, ADDRESS NO ES NECESARIO DE MOMENTO AL TENER SOLO PRODUCTOS ONLINE :D ya meteremos merchandising
                 'total' => $total,
                 'status' => 'pending',
             ]);
@@ -55,7 +56,8 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->back()->with('error', 'Error al procesar la compra');
+            //return redirect()->back()->with('error', 'Error al procesar la compra');
+            return redirect()->back()->with('error', 'Error al procesar la compra: ' . $e->getMessage());
         }
     }
 }

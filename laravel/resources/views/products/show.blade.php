@@ -45,7 +45,7 @@
       <div class="col-lg-4">
         <aside class="guide-card p-4 h-100">
           <div class="guide-detail-price mb-3">
-            <span class="price-main">{{ $product->price }}€</span>
+            <span class="price-main">{{ number_format($product->price, 2) }}€</span>
             <span class="price-label d-block text-secondary">Guía digital en PDF</span>
           </div>
 

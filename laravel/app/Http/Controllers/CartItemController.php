@@ -43,7 +43,7 @@ class CartItemController extends Controller
             ]);
         }
 
-        return redirect('/carrito')->with('success', 'Producto añadido al carrito');
+        return redirect()->route('cart.index')->with('success', 'Producto añadido al carrito');
     }
 
     public function increase(CartItem $cartItem)
@@ -83,8 +83,15 @@ class CartItemController extends Controller
 
     private function authorizeCartItem(CartItem $cartItem): void
     {
-        if ($cartItem->cart->user_id !== Auth::id()) {
+        if (!$cartItem->cart || $cartItem->cart->user_id !== Auth::id()) {
             abort(403);
         }
     }
+
+    /*private function authorizeCartItem(CartItem $cartItem): void
+    {
+        if ($cartItem->cart->user_id !== Auth::id()) {
+            abort(403);
+        }
+    }*/
 }
