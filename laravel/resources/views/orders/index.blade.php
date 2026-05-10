@@ -26,23 +26,23 @@
           </div>
         </div>
 
-        <div class="table-responsive mt-3">
-          <table class="table align-middle">
+        <div class="table-responsive mt-4">
+          <table class="table table-dark table-borderless align-middle mb-0 rounded-4 overflow-hidden">
             <thead>
-              <tr>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Precio unidad</th>
-                <th>Subtotal</th>
+              <tr class="border-bottom border-secondary">
+                <th class="py-3">Producto</th>
+                <th class="py-3">Cantidad</th>
+                <th class="py-3">Precio unidad</th>
+                <th class="py-3">Subtotal</th>
               </tr>
             </thead>
             <tbody>
               @foreach($order->items as $item)
                 <tr>
-                  <td>{{ $item->product->name ?? 'Producto eliminado' }}</td>
-                  <td>{{ $item->quantity }}</td>
-                  <td>{{ number_format($item->unit_price, 2) }}€</td>
-                  <td>{{ number_format($item->subtotal, 2) }}€</td>
+                  <td class="py-3">{{ $item->product->name ?? 'Producto eliminado' }}</td>
+                  <td class="py-3">{{ $item->quantity }}</td>
+                  <td class="py-3">{{ number_format($item->unit_price, 2) }}€</td>
+                  <td class="py-3">{{ number_format($item->subtotal, 2) }}€</td>
                 </tr>
               @endforeach
             </tbody>
