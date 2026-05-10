@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class CategoryGroup extends Model
 {
+    protected $fillable = [
+        'name',
+        'slug',
+    ];
+    
     public function categories()
     {
         return $this->hasMany(Category::class);
