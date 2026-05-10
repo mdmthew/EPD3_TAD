@@ -869,3 +869,54 @@ html { scroll-behavior: smooth; }
     color: var(--black);
     transform: translateY(-2px);
 }
+
+.filter-accordion-btn {
+    background: rgba(212, 160, 23, 0.08) !important;
+    color: var(--gray-100) !important;
+    border: 1px solid rgba(212, 160, 23, 0.25) !important;
+    border-radius: 14px !important;
+    font-weight: 700;
+    box-shadow: none !important;
+}
+
+.filter-accordion-btn:not(.collapsed) {
+    background: var(--primary) !important;
+    color: var(--black) !important;
+}
+
+.accordion-button::after {
+    filter: invert(1);
+}
+
+.filter-accordion-btn:not(.collapsed)::after {
+    filter: invert(0);
+}
+
+.guides-layout {
+    display: flex;
+    align-items: flex-start;
+}
+
+.guides-sidebar {
+    flex: 0 0 25%;
+    max-width: 25%;
+}
+
+.guides-products {
+    flex: 0 0 75%;
+    max-width: 75%;
+}
+
+@media (max-width: 991px) {
+    .guides-sidebar,
+    .guides-products {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}.guide-card .form-check-label {
+    color: var(--gray-100) !important;
+}
+
+.guide-card .accordion-body {
+    color: var(--gray-100) !important;
+}

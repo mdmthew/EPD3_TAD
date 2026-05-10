@@ -17,13 +17,13 @@ class ProductController extends Controller
         $query = Product::where('is_active', true);
 
         if ($request->filled('categories')) {
-            foreach ($request->categories as $categoryId) {
-                $query->whereHas('categories', function ($q) use ($categoryId) {
-                    $q->where('categories.id', $categoryId);
-                });
-            }
-        }
+            $categoryIds = $request->categories;
 
+            $query->whereHas('categories', function ($q) use ($categoryIds) {
+                $q->whereIn('categories.id', $categoryIds);
+            });
+        }
+        
         if ($request->filled('travel_price_level')) {
             $query->where('travel_price_level', '<=', $request->travel_price_level);
         }
