@@ -6,14 +6,14 @@
 <section class="wyve-hero">
   <div class="hero-container">
     <div class="hero-content">
-      <div class="hero-badge">Guías de viaje a 2€</div>
+      <div class="hero-badge">Guías de viaje desde 2€</div>
 
       <h1 class="hero-title">
         Descubre el mundo sin <span class="highlight">arruinarte</span>
       </h1>
 
       <p class="hero-description">
-        Guías prácticas creadas por ingenieros viajeros. Experiencias reales, precios imposibles. Todo por solo 2€ por guía.
+        Guías prácticas creadas por ingenieros viajeros. Experiencias reales, precios imposibles. Todo desde 2€ por guía.
       </p>
 
       <div class="hero-actions">
@@ -24,10 +24,21 @@
         <a href="{{ url('/nosotros') }}" class="btn-secondary">Conocer a los creadores</a>
       </div>
 
-      <div class="hero-stats">
-        <div class="stat"><span class="stat-number">2€</span><span class="stat-label">por guía</span></div>
-        <div class="stat"><span class="stat-number">100%</span><span class="stat-label">experiencias reales</span></div>
-        <div class="stat"><span class="stat-number">24h</span><span class="stat-label">entrega digital</span></div>
+      <div class="hero-stats d-flex flex-wrap gap-5">
+        <div class="stat">
+          <span class="stat-number">Desde 2€</span>
+          <span class="stat-label">por guía</span>
+        </div>
+
+        <div class="stat">
+          <span class="stat-number">100%</span>
+          <span class="stat-label">experiencias reales</span>
+        </div>
+
+        <div class="stat">
+          <span class="stat-number">24h</span>
+          <span class="stat-label">entrega digital</span>
+        </div>
       </div>
     </div>
     <div class="hero-visual guides-carousel">
