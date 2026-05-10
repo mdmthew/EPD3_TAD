@@ -39,7 +39,8 @@ Route::get('/nosotros', function () {
 */
 
 Route::get('/pedidos', function () {
-    $orders = Order::where('user_id', Auth::id())
+    $orders = Order::with('items.product')
+        ->where('user_id', Auth::id())
         ->latest()
         ->get();
 
