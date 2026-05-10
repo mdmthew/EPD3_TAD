@@ -12,76 +12,94 @@
       <p class="section-description">Cada guía es el resultado de semanas de exploración y documentación.</p>
     </div>
 
-    <div class="row g-4 align-items-start">
-      <div class="col-lg-3">
+    <div class="row g-4 align-items-start guides-layout">
+      <div class="col-lg-3 guides-sidebar">
         <div class="guide-card p-4 sticky-top" style="top:110px">
-          <h2 class="h5 mb-4">Filtrar</h2>
-          <form method="GET" action="{{ route('guides.index') }}" id="filtersForm">
 
-            @foreach($categoryGroups as $group)
+            <h2 class="h5 mb-4">
+              <i class="fas fa-filter"></i> Filtrar
+            </h2>
 
-              <div class="mb-4">
+            <form method="GET" action="{{ route('guides.index') }}" id="filtersForm">
 
-                <h3 class="h6 mb-3">
-                  {{ $group->name }}
-                </h3>
+              <div class="accordion accordion-flush" id="filtersAccordion">
 
-                @foreach($group->categories as $category)
+                @foreach($categoryGroups as $group)
 
-                  <div class="form-check mb-2">
+                  <div class="accordion-item bg-transparent border-0 mb-3">
 
-                    <input
-                      class="form-check-input filter-input"
-                      type="checkbox"
-                      name="categories[]"
-                      value="{{ $category->id }}"
-                      id="category_{{ $category->id }}"
-                      {{ in_array($category->id, request('categories', [])) ? 'checked' : '' }}
+                    <h3 class="accordion-header" id="heading_{{ $group->id }}">
+                      <button
+                        class="accordion-button collapsed filter-accordion-btn"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapse_{{ $group->id }}"
+                        aria-expanded="false"
+                        aria-controls="collapse_{{ $group->id }}"
+                      >
+                        {{ $group->name }}
+                      </button>
+                    </h3>
+
+                    <div
+                      id="collapse_{{ $group->id }}"
+                      class="accordion-collapse collapse"
+                      aria-labelledby="heading_{{ $group->id }}"
+                      data-bs-parent="#filtersAccordion"
                     >
+                      <div class="accordion-body px-0 pt-3">
 
-                    <label
-                      class="form-check-label"
-                      for="category_{{ $category->id }}"
-                    >
-                      {{ $category->name }}
-                    </label>
+                        @foreach($group->categories as $category)
 
+                          <div class="form-check mb-2">
+
+                            <input
+                              class="form-check-input filter-input"
+                              type="checkbox"
+                              name="categories[]"
+                              value="{{ $category->id }}"
+                              id="category_{{ $category->id }}"
+                              {{ in_array($category->id, request('categories', [])) ? 'checked' : '' }}
+                            >
+
+                            <label
+                              class="form-check-label"
+                              for="category_{{ $category->id }}"
+                            >
+                              {{ $category->name }}
+                            </label>
+
+                          </div>
+
+                        @endforeach
+                      </div>
+                    </div>
+                  </div>
+                @endforeach
+              </div>
+                <div class="mt-4">
+                  <h3 class="h6 mb-3">Precio del viaje</h3>
+
+                  <div class="d-flex justify-content-between small mb-1">
+                    <span>$</span>
+                    <span>$$$</span>
                   </div>
 
-                @endforeach
-
-              </div>
-
-            @endforeach
-
-            {{-- PRECIO VIAJE --}}
-
-            <div class="mb-4">
-
-              <h3 class="h6 mb-3">
-                Precio del viaje
-              </h3>
-
-              <div class="d-flex justify-content-between small mb-1">
-                <span>$</span>
-                <span>$$$</span>
-              </div>
-
-              <input
-                type="range"
-                min="1"
-                max="3"
-                step="1"
-                name="travel_price_level"
-                value="{{ request('travel_price_level', 3) }}"
-                class="form-range filter-input"
-              >
-            </div>
-          </form>
+                  <input
+                    type="range"
+                    min="1"
+                    max="3"
+                    step="1"
+                    name="travel_price_level"
+                    value="{{ request('travel_price_level', 3) }}"
+                    class="form-range filter-input"
+                  >
+                </div>
+            </form>
+          </div>
         </div>
-      </div>
 
-      <div class="col-lg-9">
+      <div class="col-lg-9 guides-products">
         <div class="row g-4">
 
           @forelse($products ?? [] as $product)
