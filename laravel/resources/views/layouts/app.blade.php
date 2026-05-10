@@ -65,6 +65,14 @@
                             </a>
                         </li>
 
+                        @if(Auth::user()->role === 'admin')
+                            <li>
+                                <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                    <i class="fas fa-user-shield"></i> Panel admin
+                                </a>
+                            </li>
+                        @endif
+
                         <li><hr class="dropdown-divider"></li>
 
                         <li>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\Admin\ProductAdminController;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
@@ -13,6 +14,7 @@ class Product extends Model
         'stock',
         'image',
         'is_active',
+        'travel_price_level',
     ];
 
     public function cartItems()
