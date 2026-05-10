@@ -46,6 +46,8 @@ class CategorySeeder extends Seeder
         $landscape = CategoryGroup::create([
             'name' => 'Paisaje',
             'slug' => 'paisaje',
+            'name' => 'Montaña',
+            'slug' => 'montana',
         ]);
 
         $landscapeCategories = [

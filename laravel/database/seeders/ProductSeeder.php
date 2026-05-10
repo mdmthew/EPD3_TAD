@@ -27,10 +27,10 @@ class ProductSeeder extends Seeder
         );
 
         $roma->categories()->attach([
-            Category::where('slug', 'Europa')->first()->id,
-            Category::where('slug', 'Ciudad')->first()->id,
-            Category::where('slug', 'Menos de 1 semana')->first()->id,
-            Category::where('slug', '5€ a 10€')->first()->id,
+            Category::where('slug', 'europa')->first()->id,
+            Category::where('slug', 'ciudad')->first()->id,
+            Category::where('slug', 'menos-de-1-semana')->first()->id,
+            Category::where('slug', '5€-a-10€')->first()->id,
         ]);
 
 
@@ -47,11 +47,11 @@ class ProductSeeder extends Seeder
         );
 
         $bali->categories()->attach([
-            Category::where('slug', 'Asia')->first()->id,
-            Category::where('slug', 'Playa')->first()->id,
-            Category::where('slug', 'Selva')->first()->id,
+            Category::where('slug', 'asia')->first()->id,
+            Category::where('slug', 'playa')->first()->id,
+            Category::where('slug', 'selva')->first()->id,
             Category::where('slug', '7-a-15-días')->first()->id,
-            Category::where('slug', '5€ a 10€')->first()->id,
+            Category::where('slug', '5€-a-10€')->first()->id,
         ]);
 
 
@@ -67,10 +67,10 @@ class ProductSeeder extends Seeder
             ]
         );
         $paris->categories()->attach([
-            Category::where('slug', 'Asia')->first()->id,
-            Category::where('slug', 'Ciudad')->first()->id,
-            Category::where('slug', 'Menos de 1 semana')->first()->id,
-            Category::where('slug', '10€ a 15€')->first()->id,
+            Category::where('slug', 'asia')->first()->id,
+            Category::where('slug', 'ciudad')->first()->id,
+            Category::where('slug', 'menos-de-1-semana')->first()->id,
+            Category::where('slug', '10€-a-15€')->first()->id,
         ]);
 
         $newYork = Product::updateOrCreate(
@@ -85,10 +85,10 @@ class ProductSeeder extends Seeder
             ]
         );
         $newYork->categories()->attach([
-            Category::where('slug', 'América')->first()->id,
-            Category::where('slug', 'Ciudad')->first()->id,
-            Category::where('slug', '15 a 20 días')->first()->id,
-            Category::where('slug', '15€ a 20€')->first()->id,
+            Category::where('slug', 'america')->first()->id,
+            Category::where('slug', 'ciudad')->first()->id,
+            Category::where('slug', '15-a-20-dias')->first()->id,
+            Category::where('slug', '15€-a-20€')->first()->id,
         ]);
 
         $tokio = Product::updateOrCreate(
@@ -103,11 +103,11 @@ class ProductSeeder extends Seeder
             ]
         );
         $tokio->categories()->attach([
-            Category::where('slug', 'Asia')->first()->id,
-            Category::where('slug', 'Ciudad')->first()->id,
-            Category::where('slug', 'Montaña')->first()->id,
-            Category::where('slug', 'Más de 20 días')->first()->id,
-            Category::where('slug', 'Menos de 5€')->first()->id,
+            Category::where('slug', 'asia')->first()->id,
+            Category::where('slug', 'ciudad')->first()->id,
+            Category::where('slug', 'montana')->first()->id,
+            Category::where('slug', 'mas-de-20-días')->first()->id,
+            Category::where('slug', 'menos-de-5€')->first()->id,
         ]);
 
         $marrakech = Product::updateOrCreate(
@@ -122,12 +122,12 @@ class ProductSeeder extends Seeder
             ]
         );
         $marrakech->categories()->attach([
-            Category::where('slug', 'África')->first()->id,
-            Category::where('slug', 'Ciudad')->first()->id,
-            Category::where('slug', 'Animal')->first()->id,
-            Category::where('slug', 'Selva')->first()->id,
-            Category::where('slug', 'Más de 20 días')->first()->id,
-            Category::where('slug', 'Menos de 5€')->first()->id,
+            Category::where('slug', 'africa')->first()->id,
+            Category::where('slug', 'ciudad')->first()->id,
+            Category::where('slug', 'animal')->first()->id,
+            Category::where('slug', 'selva')->first()->id,
+            Category::where('slug', 'mas-de-20-dias')->first()->id,
+            Category::where('slug', 'menos-de-5€')->first()->id,
         ]);
 
         $londres = Product::updateOrCreate(
@@ -142,10 +142,10 @@ class ProductSeeder extends Seeder
             ]
         );
         $londres->categories()->attach([
-            Category::where('slug', 'Europa')->first()->id,
-            Category::where('slug', 'Ciudad')->first()->id,
-            Category::where('slug', '7 a 15 días')->first()->id,
-            Category::where('slug', '10€ a 15€')->first()->id,
+            Category::where('slug', 'europa')->first()->id,
+            Category::where('slug', 'ciudad')->first()->id,
+            Category::where('slug', '7-a-15-dias')->first()->id,
+            Category::where('slug', '10€-a-15€')->first()->id,
         ]);
     }
 }
