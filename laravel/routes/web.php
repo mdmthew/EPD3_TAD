@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Admin\ProductAdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -110,11 +111,33 @@ Route::post('/checkout', [OrderController::class, 'checkout'])
 | Rutas administrador
 |--------------------------------------------------------------------------
 */
+Route::middleware(['auth', 'admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
 
-Route::get('/admin', function () {
-    return view('admin.dashboard');
-})->middleware('auth')->name('admin.dashboard');
+        Route::get('/', function () {
+            return view('admin.dashboard');
+        })->name('dashboard');
 
-Route::get('/admin/productos', function () {
-    return view('admin.products.index');
-})->middleware('auth')->name('admin.products.index');
+        Route::get('/productos', [ProductAdminController::class, 'index'])
+            ->name('products.index');
+
+        Route::get('/productos/create', [ProductAdminController::class, 'create'])
+            ->name('products.create');
+
+        Route::post('/productos', [ProductAdminController::class, 'store'])
+            ->name('products.store');
+
+        Route::get('/productos/{product}/edit', [ProductAdminController::class, 'edit'])
+            ->name('products.edit');
+
+        Route::put('/productos/{product}', [ProductAdminController::class, 'update'])
+            ->name('products.update');
+
+        Route::patch('/productos/{product}/toggle', [ProductAdminController::class, 'toggle'])
+            ->name('products.toggle');
+
+        Route::delete('/productos/{product}', [ProductAdminController::class, 'destroy'])
+            ->name('products.destroy');
+});
