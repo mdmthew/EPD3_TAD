@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use App\Mail\OrderStatusMail;
+use Illuminate\Support\Facades\Mail;
 
 class OrderAdminController extends Controller
 {
@@ -27,6 +29,12 @@ class OrderAdminController extends Controller
             'status' => $data['status'],
         ]);
 
-        return back()->with('success', 'Estado del pedido actualizado correctamente');
+        $order->load(['user', 'items.product']);
+
+        Mail::to($order->user->email)
+            ->send(new OrderStatusMail($order));
+
+        return back()->with('success', 'Estado del pedido actualizado correctamente y correo enviado al usuario');
     }
 }
+

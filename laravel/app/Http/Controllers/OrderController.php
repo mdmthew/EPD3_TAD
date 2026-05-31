@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Mail\OrderStatusMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -51,6 +53,13 @@ class OrderController extends Controller
             $cart->items()->delete();
 
             DB::commit();
+
+            $order->load('user', 'items.product');
+            
+
+            //ENVIO DE MENSAJE AL USUARIO DE CONFIRMACION DE PEDIDO 
+            Mail::to($user->email)->send(new OrderStatusMail($order));
+            
 
             return redirect()->back()->with('success', 'Compra realizada correctamente');
         } catch (\Exception $e) {
