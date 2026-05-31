@@ -9,10 +9,12 @@ use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Admin\ProductAdminController;
 use App\Http\Controllers\Admin\CategoryAdminController;
 use App\Http\Controllers\Admin\UserAdminController;
 use App\Http\Controllers\Admin\OrderAdminController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -207,6 +209,23 @@ Route::middleware(['auth', 'admin'])
 
         Route::patch('/pedidos/{order}/estado', [OrderAdminController::class, 'updateStatus'])
             ->name('orders.updateStatus');
+
+
+        /*
+        |---------------------------
+        | Mail
+        |---------------------------
+        */
+        
+
+        Route::get('/test-mail', function () {
+            Mail::raw('Correo de prueba desde Laravel y Mailtrap.', function ($message) {
+                $message->to('test@example.com')
+                        ->subject('Prueba Mailtrap');
+            });
+
+            return 'Correo enviado a Mailtrap';
+        });
 
 
 
