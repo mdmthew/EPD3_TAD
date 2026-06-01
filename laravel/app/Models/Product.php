@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Http\Controllers\Admin\ProductAdminController;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
@@ -32,4 +31,8 @@ class Product extends Model
         return $this->belongsToMany(Category::class);
     }
 
+    public function favoritedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'favorites');
+    }
 }

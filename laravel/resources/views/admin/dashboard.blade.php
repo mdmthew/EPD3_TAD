@@ -12,7 +12,8 @@
     </div>
 
     <div class="row g-4">
-      <div class="col-md-3">
+
+      <div class="col-md-6 col-xl-3">
         <div class="guide-card p-4 h-100">
           <h2 class="h5">Productos</h2>
           <p class="text-secondary">Crear, editar, ocultar o eliminar productos.</p>
@@ -22,7 +23,7 @@
         </div>
       </div>
 
-      <div class="col-md-3">
+      <div class="col-md-6 col-xl-3">
         <div class="guide-card p-4 h-100">
           <h2 class="h5">Categorías</h2>
           <p class="text-secondary">Gestionar categorías de productos.</p>
@@ -32,7 +33,7 @@
         </div>
       </div>
 
-      <div class="col-md-3">
+      <div class="col-md-6 col-xl-3">
         <div class="guide-card p-4 h-100">
           <h2 class="h5">Pedidos</h2>
           <p class="text-secondary">Consulta y actualización de pedidos.</p>
@@ -42,7 +43,7 @@
         </div>
       </div>
 
-      <div class="col-md-3">
+      <div class="col-md-6 col-xl-3">
         <div class="guide-card p-4 h-100">
           <h2 class="h5">Usuarios</h2>
           <p class="text-secondary">Editar usuarios y controlar roles.</p>
@@ -51,6 +52,17 @@
           </a>
         </div>
       </div>
+
+      <div class="col-md-6 col-xl-3">
+        <div class="guide-card p-4 h-100">
+          <h2 class="h5">Favoritos</h2>
+          <p class="text-secondary">Consulta qué guías son más guardadas por los usuarios.</p>
+          <a href="{{ route('admin.favorites.index') }}" class="btn-primary mt-3">
+            Ver estadísticas
+          </a>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>

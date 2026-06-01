@@ -8,8 +8,6 @@ use App\Http\Controllers\ProductController;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Admin\ProductAdminController;
 use App\Http\Controllers\Admin\CategoryAdminController;
 use App\Http\Controllers\Admin\UserAdminController;
@@ -53,32 +51,35 @@ Route::get('/pedidos', function () {
     return view('orders.index', compact('orders'));
 })->middleware('auth')->name('orders.index');
 
+/*
+|--------------------------------------------------------------------------
+| Rutas funcionales de favoritos
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/favoritos', function () {
-    $favorites = Product::whereIn('id', function ($query) {
-        $query->select('product_id')
-            ->from('favorites')
-            ->where('user_id', Auth::id());
-    })->get();
+    $favorites = Auth::user()
+        ->favoriteProducts()
+        ->where('is_active', true)
+        ->get();
 
     return view('favorites.index', compact('favorites'));
 })->middleware('auth')->name('favorites.index');
 
 Route::post('/favoritos/{product}', function (Product $product) {
-    DB::table('favorites')->updateOrInsert([
-        'user_id' => Auth::id(),
-        'product_id' => $product->id,
-    ]);
+    Auth::user()
+        ->favoriteProducts()
+        ->syncWithoutDetaching([$product->id]);
 
-    return back()->with('success', 'Producto añadido a favoritos');
+    return back()->with('success', 'Guía añadida a favoritos');
 })->middleware('auth')->name('favorites.add');
 
 Route::delete('/favoritos/{product}', function (Product $product) {
-    DB::table('favorites')
-        ->where('user_id', Auth::id())
-        ->where('product_id', $product->id)
-        ->delete();
+    Auth::user()
+        ->favoriteProducts()
+        ->detach($product->id);
 
-    return redirect('/favoritos');
+    return back()->with('success', 'Guía eliminada de favoritos');
 })->middleware('auth')->name('favorites.remove');
 
 /*
@@ -116,6 +117,7 @@ Route::post('/checkout', [OrderController::class, 'checkout'])
 | Rutas administrador
 |--------------------------------------------------------------------------
 */
+
 Route::middleware(['auth', 'admin'])
     ->prefix('admin')
     ->name('admin.')
@@ -131,7 +133,7 @@ Route::middleware(['auth', 'admin'])
         | Productos
         |---------------------------
         */
-        
+
         Route::get('/productos', [ProductAdminController::class, 'index'])
             ->name('products.index');
 
@@ -213,21 +215,17 @@ Route::middleware(['auth', 'admin'])
 
         /*
         |---------------------------
-        | Mail
+        | Estadísticas de favoritos
         |---------------------------
         */
-        
 
-        Route::get('/test-mail', function () {
-            Mail::raw('Correo de prueba desde Laravel y Mailtrap.', function ($message) {
-                $message->to('test@example.com')
-                        ->subject('Prueba Mailtrap');
-            });
+        Route::get('/favoritos', function () {
+            $products = Product::withCount('favoritedByUsers as favorites_count')
+                ->orderByDesc('favorites_count')
+                ->get();
 
-            return 'Correo enviado a Mailtrap';
-        });
-
-
+            return view('admin.favorites.index', compact('products'));
+        })->name('favorites.index');
 
     });
 
