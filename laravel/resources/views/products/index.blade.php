@@ -131,7 +131,7 @@
                   <p class="guide-excerpt">{{ $product->description }}</p>
                 </div>
 
-                <div class="guide-actions position-relative" onclick="event.stopPropagation();">
+                <div class="guide-actions position-relative" onclick="event.stopPropagation();"> 
                 @auth
 
                   <form method="POST" action="{{ route('cart.add') }}">
@@ -145,16 +145,33 @@
                     </button>
                   </form>
 
-                  <form method="POST" action="{{ route('favorites.add', $product->id) }}">
-                    @csrf
+                  @php
+                    $isFavorite = Auth::user()
+                        ->favoriteProducts()
+                        ->where('products.id', $product->id)
+                        ->exists();
+                  @endphp
 
-                    <button type="submit" class="guide-fav-btn">
-                      <i class="fas fa-heart"></i>
-                    </button>
-                  </form>
+                  @if($isFavorite)
+                    <form method="POST" action="{{ route('favorites.remove', $product->id) }}">
+                      @csrf
+                      @method('DELETE')
+
+                      <button type="submit" class="guide-fav-btn" title="Quitar de favoritos">
+                        <i class="fas fa-heart-broken"></i>
+                      </button>
+                    </form>
+                  @else
+                    <form method="POST" action="{{ route('favorites.add', $product->id) }}">
+                      @csrf
+
+                      <button type="submit" class="guide-fav-btn" title="Añadir a favoritos">
+                        <i class="fas fa-heart"></i>
+                      </button>
+                    </form>
+                  @endif
 
                 @else
-
                   <a href="{{ route('login') }}" class="guide-buy-btn">
                     <i class="fas fa-cart-plus"></i>
                     Añadir

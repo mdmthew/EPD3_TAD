@@ -15,7 +15,11 @@
     <div class="row g-4">
       @forelse($favorites as $product)
         <div class="col-md-6 col-xl-4">
-          <article class="guide-card h-100">
+          <article
+            class="guide-card h-100 guide-clickable"
+            onclick="window.location='{{ route('guides.show', $product->id) }}'"
+            style="cursor:pointer;"
+          >
             <div class="guide-header">
               <span class="guide-badge">FAVORITO</span>
               <div class="guide-price">{{ $product->price }}€</div>
@@ -30,7 +34,7 @@
               <p class="guide-excerpt">{{ $product->description }}</p>
             </div>
 
-            <div class="guide-actions">
+            <div class="guide-actions" onclick="event.stopPropagation();">
               <a href="{{ url('/guias/' . $product->id) }}" class="guide-details-link">
                 <i class="fas fa-info-circle"></i> Más detalles
               </a>
